@@ -40,7 +40,6 @@ public class OrderController {
     public ResponseEntity<OrderResponse> update(@PathVariable Long id,
                                                 @RequestBody UpsetOrderRequest request){
         Order updatedOrder = orderService.update(orderMapper.requestToOrder(id, request));
-
         return ResponseEntity.ok(orderMapper.orderToResponse(updatedOrder));
     }
 
