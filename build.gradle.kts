@@ -27,7 +27,10 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 //	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
+	implementation("com.fasterxml.jackson.core:jackson-core:2.16.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("net.javacrumbs.json-unit:json-unit:2.38.0")
+
 }
 
 tasks.withType<Test> {
