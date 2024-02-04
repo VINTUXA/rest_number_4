@@ -23,6 +23,7 @@ import java.util.List;
 public class ClientControllerTest extends AbstractTestController {
 
     @MockBean
+    //создание заглушки, можно настраивать чтобы было удобно тестировать
     private ClientService clientService;
 
     @MockBean
@@ -45,7 +46,7 @@ public class ClientControllerTest extends AbstractTestController {
 
         ClientListResponse clientListResponse = new ClientListResponse(clientResponse);
 
-        //
+        // вызов контроллера
         Mockito.when(clientService.findAll()).thenReturn(clients);
 
         Mockito.when(clientMapper.clientListToClientListResponse(clients)).thenReturn(clientListResponse);
@@ -56,16 +57,16 @@ public class ClientControllerTest extends AbstractTestController {
                 .getResponse()
                 .getContentAsString();
 
+
+        //проверки
         String expected = StringTestUtils.readStringFromResource("response/find_all_clients_response.json");
         Mockito.verify(clientService, Mockito.times(1)).findAll();
         Mockito.verify(clientMapper, Mockito.times(1)).clientListToClientListResponse(clients);
 
         JsonAssert.assertJsonEquals(expected, actualResponse);
-
-
-
-
-
     }
+
+
+    //21 минута
 
 }
