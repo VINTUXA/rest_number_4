@@ -67,6 +67,34 @@ public class ClientControllerTest extends AbstractTestController {
     }
 
 
-    //21 минута
+    @Test
+    public void whenGetClientById_thenReturnClientById() throws Exception{
+        Client client = createClient(1L, null);
+        ClientResponse clientResponse = createClientResponse(1L, null);
+
+        Mockito.when(clientService.findById(1L)).thenReturn(client);
+        Mockito.when(clientMapper.clientToResponse(client)).thenReturn(clientResponse);
+
+        String actualResponse = mockMvc.perform(get("/api/v1/client/1"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String expectedResponse = StringTestUtils.readStringFromResource("response/find_client_by_id_resposne.json");
+
+        Mockito.verify(clientService, Mockito.times(1)).findById(1L);
+        Mockito.verify(clientMapper, Mockito.times(1)).clientToResponse(client);
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenCreateClient_thenReturnNewClient() throws Exception{
+        Client client = new Client();
+        client.setName("Client 1");
+        Client createdClient = createClient(1L, null);
+
+    }
 
 }
