@@ -1,5 +1,6 @@
-package com.example.rest.rest.web.model.v1;
+package com.example.rest.rest.web.model.controller.v1;
 
+import com.example.rest.rest.exception.EntityNotFoundException;
 import com.example.rest.rest.mapper.v1.ClientMapper;
 import com.example.rest.rest.model.Client;
 import com.example.rest.rest.service.ClientService;
@@ -50,5 +51,10 @@ public class ClientController {
         clientService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+//    @ExceptionHandler(EntityNotFoundException.class)
+//    public ResponseEntity<Void> notFoundException(EntityNotFoundException ex){
+//        return ResponseEntity.notFound().build();
+//    }
 
 }
