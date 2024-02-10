@@ -1,0 +1,3 @@
+{
+  "errorMessage": "Client name cant be lower than 3, and not grater then 30"
+}
