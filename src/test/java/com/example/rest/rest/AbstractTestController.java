@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 //используется для указания что тест является интеграционным и должен загружать весь контекст приложения
 @AutoConfigureMockMvc
 // часть фреймворка тест для автоматической конфиграции и внедрения мок мвс и не требует ручного создания и настройки его
+@ActiveProfiles("test")
 public abstract class AbstractTestController {
 
     @Autowired

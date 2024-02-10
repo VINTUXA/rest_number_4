@@ -30,6 +30,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-core:2.16.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("net.javacrumbs.json-unit:json-unit:2.38.0")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
 
 }
 

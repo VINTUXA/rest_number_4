@@ -11,11 +11,16 @@ import com.example.rest.rest.web.model.ClientListResponse;
 import com.example.rest.rest.web.model.ClientResponse;
 import com.example.rest.rest.web.model.OrderResponse;
 import com.example.rest.rest.web.model.UpsetClientRequest;
+import net.bytebuddy.utility.RandomString;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 //import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ClientControllerTest extends AbstractTestController {
 
@@ -165,8 +171,65 @@ public class ClientControllerTest extends AbstractTestController {
     public void whenGetNoExistedClient_thenReturnError() throws Exception{
         Mockito.when(clientService.findById(500L)).thenThrow(new EntityNotFoundException("Client with id 500 not found"));
 
-        mockMvc.perform(get("/api/v1/client/500"))
-                .andExpect(status().isNotFound());
+        var response = mockMvc.perform(get("/api/v1/client/500"))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+
+        String expectedResponse = StringTestUtils.readStringFromResource("response/client_by_id_not_found_response.json");
+
+        Mockito.verify(clientService, Mockito.times(1)).findById(500L);
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void whenCreateClientWithEmptyName_ThenReturnError() throws Exception{
+        var response = mockMvc.perform(post("/api/v1/client")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new UpsetClientRequest())))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectedResponse = StringTestUtils.readStringFromResource("response/empty_client_name_response.json");
+
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidSizeName")
+    public void whenCreateClientWithInvalidSizeName_thenReturnError(String name) throws Exception{
+        var response = mockMvc.perform(post("/api/v1/client")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new UpsetClientRequest(name))))
+                        .andExpect(status().isBadRequest())
+                        .andReturn()
+                        .getResponse();
+        response.setCharacterEncoding("UTF-8");
+
+        String actualResponse = response.getContentAsString();
+        String expectedResponse = StringTestUtils.readStringFromResource("response/client_name_size_exception_response.json");
+
+
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+
+    }
+
+    private static Stream<Arguments> invalidSizeName(){
+        return Stream.of(
+                Arguments.of(RandomString.make(2)),
+                Arguments.of(RandomString.make(32))
+        );
     }
 
 }
