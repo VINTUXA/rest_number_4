@@ -31,7 +31,7 @@ public class OrderControllerV2 {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> save(@RequestBody UpsetOrderRequest upsetOrderRequest){
+    public ResponseEntity<OrderResponse> save(@RequestBody UpsetOrderRequest upsetOrderRequest){ // можно валид добавить
         Order newOrder = databaseOrderService.save(orderMapper.requestToOrder(upsetOrderRequest));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderMapper.orderToResponse(newOrder));

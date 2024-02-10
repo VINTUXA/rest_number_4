@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public interface OrderMapperV2 {
     Order requestToOrder(UpsetOrderRequest request);
 
-    @Mapping(source = "order_id", target = "id") // указание мапиинга между свойствами
+    @Mapping(source = "orderId", target = "id") // указание мапиинга между свойствами
     Order requestToOrder(Long orderId, UpsetOrderRequest request);
 
     OrderResponse orderToResponse(Order order);

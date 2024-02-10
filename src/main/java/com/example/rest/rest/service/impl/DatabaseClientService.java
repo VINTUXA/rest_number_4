@@ -6,6 +6,7 @@ import com.example.rest.rest.repository.DatabaseClientRepository;
 import com.example.rest.rest.service.ClientService;
 import com.example.rest.rest.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+//@Primary
 public class DatabaseClientService implements ClientService {
     private final DatabaseClientRepository clientRepository;
 

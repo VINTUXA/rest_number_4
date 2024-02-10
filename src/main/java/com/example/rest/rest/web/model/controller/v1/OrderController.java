@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderMapper orderMapper;
-    private final OrderService orderService;
+    private final OrderService orderServiceImpl;
 
     @GetMapping
     public ResponseEntity<OrderListResponse> findAll(){
-        return ResponseEntity.ok(orderMapper.orderListToOrderListResponse(orderService.findAll()));
+        return ResponseEntity.ok(orderMapper.orderListToOrderListResponse(orderServiceImpl.findAll()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> findById(@PathVariable Long id){
         return ResponseEntity.ok(
-                orderMapper.orderToResponse(orderService.findById(id)));
+                orderMapper.orderToResponse(orderServiceImpl.findById(id)));
     }
 
     @PostMapping
     public ResponseEntity<OrderResponse> save(@RequestBody UpsetOrderRequest upsetOrderRequest){
-        Order newOrder = orderService.save(orderMapper.requestToOrder(upsetOrderRequest));
+        Order newOrder = orderServiceImpl.save(orderMapper.requestToOrder(upsetOrderRequest));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderMapper.orderToResponse(newOrder));
     }
@@ -39,13 +39,13 @@ public class OrderController {
     @PutMapping("/{id}")
     public ResponseEntity<OrderResponse> update(@PathVariable Long id,
                                                 @RequestBody UpsetOrderRequest request){
-        Order updatedOrder = orderService.update(orderMapper.requestToOrder(id, request));
+        Order updatedOrder = orderServiceImpl.update(orderMapper.requestToOrder(id, request));
         return ResponseEntity.ok(orderMapper.orderToResponse(updatedOrder));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        orderService.delete(id);
+        orderServiceImpl.delete(id);
 
         return ResponseEntity.noContent().build();
     }

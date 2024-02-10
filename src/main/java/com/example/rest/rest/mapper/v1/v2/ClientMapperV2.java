@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 public interface ClientMapperV2 {
     Client requestToClient(UpsetClientRequest request);
 
-    @Mapping(source = "clietn_id", target = "id")
-    Client requestToClient(Long id, UpsetClientRequest request);
+    @Mapping(source = "clientId", target = "id")
+    Client requestToClient(Long clientId, UpsetClientRequest request);
 
      // указание мапиинга между свойствами
         // Client requestToClient(Long id, UpsetClientRequest request);

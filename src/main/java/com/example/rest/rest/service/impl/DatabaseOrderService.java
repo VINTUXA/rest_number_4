@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DatabaseOrderService implements OrderService {
     private final DatabaseOrderRepository orderRepository;
-    private final ClientService clientService;
+    private final ClientService databaseClientService;
 
     @Override
     public List<Order> findAll() {
@@ -34,7 +34,7 @@ public class DatabaseOrderService implements OrderService {
 
     @Override
     public Order save(Order order) {
-        Client client = clientService.findById(order.getClient().getId());
+        Client client = databaseClientService.findById(order.getClient().getId());
         order.setClient(client);
         return orderRepository.save(order);
     }
@@ -42,7 +42,7 @@ public class DatabaseOrderService implements OrderService {
     @Override
     public Order update(Order order) {
         checkForUpdate(order.getId());
-        Client client = clientService.findById(order.getClient().getId());
+        Client client = databaseClientService.findById(order.getClient().getId());
         Order existedOrder = findById(order.getId());
         BeanUtils.copyNonNullProperties(order, existedOrder);
         existedOrder.setClient(client);

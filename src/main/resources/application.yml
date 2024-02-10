@@ -1,6 +1,19 @@
 spring:
   main:
     allow-circular-references: true
+  jpa:
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/app_db
+    username: postgres
+    password: postgres
+    hikari:
+      schema: app_schema
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS app_schema
+      connection-timeout: 10000
+
+
+
 app:
   check-client-api-header: false
   client-api-key: 12345
