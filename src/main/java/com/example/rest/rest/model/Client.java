@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 @Entity(name = "clients")
+//@Builder
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,7 @@ public class Client {
     private String name;
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)// маппед указывает на обратное отображение к отношение многие к одномк
     @ToString.Exclude // каскад указывает какие оперции по сохра обновлению и тд должны быть применены к связанной сущности
+    @Builder.Default // всегда будет билдиться если не задан
     private List<Order> orders = new ArrayList<>();
 
     public void addOrder(Order order){
@@ -33,8 +35,8 @@ public class Client {
 
 //    public List<g>
 
-    public List<Order> getOrders() {
-        if (orders == null) orders = new ArrayList<>();
-        return orders;
-    }
+//    public List<Order> getOrders() {
+//        if (orders == null) orders = new ArrayList<>();
+//        return orders;
+//    }
 }

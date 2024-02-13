@@ -4,8 +4,11 @@ import com.example.rest.rest.exception.EntityNotFoundException;
 import com.example.rest.rest.model.Order;
 import com.example.rest.rest.repository.OrderRepository;
 import com.example.rest.rest.service.OrderService;
+import com.example.rest.rest.web.model.OrderFilter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.text.MessageFormat;
 import java.time.Duration;
@@ -17,6 +20,11 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+
+    @Override
+    public List<Order> filterBy(OrderFilter orderFilter) {
+        throw new NotImplementedException();
+    }
 
     @Override
     public List<Order> findAll() {
