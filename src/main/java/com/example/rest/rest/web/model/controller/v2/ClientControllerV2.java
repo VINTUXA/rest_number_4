@@ -1,10 +1,13 @@
 package com.example.rest.rest.web.model.controller.v2;
+import java.util.List;
 
 import com.example.rest.rest.mapper.v1.v2.ClientMapperV2;
 import com.example.rest.rest.model.Client;
+import com.example.rest.rest.model.Order;
 import com.example.rest.rest.service.ClientService;
 import com.example.rest.rest.web.model.ClientListResponse;
 import com.example.rest.rest.web.model.ClientResponse;
+import com.example.rest.rest.web.model.CreateClientWithOrderRequest;
 import com.example.rest.rest.web.model.UpsetClientRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -82,5 +85,18 @@ public class ClientControllerV2 {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         databaseClientService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("save-with-orders")
+    public ResponseEntity<ClientResponse> createWithOrders(@RequestBody CreateClientWithOrderRequest request){
+        Client client = Client.builder().name(request.getName()).build();
+        List<Order> orders = request.getOrders().stream().map(orderRequest -> Order.builder()
+                .product(orderRequest.getProduct())
+                .cost(orderRequest.getCost())
+                .build())
+                .toList();
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                clientMapper.clientToResponse(databaseClientService.saveWithOrders(client, orders))
+        );
     }
 }
